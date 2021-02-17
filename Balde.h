@@ -29,8 +29,10 @@ public:
     bool busca_pseudoch(string ch);
     int getprofundidadeLocal();
     int aumenta_profundidade_local();
-    string valores(int ind);
+    std::string valores(int ind);
     void apaga(string ch);
+    bool baldevazio();
+    int getSize();
     int gettam();
     void imprimeBalde();
     

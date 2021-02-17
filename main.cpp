@@ -24,13 +24,31 @@ using namespace std;
 // 	-Buscar
 // 	-Dividir baldes
 // 	-Duplica diretorio
+bool valoresExiste(vector<string> valores,string valor){
+
+    int comp;
+    for(int i=0;i<valores.size();i++){
+          comp = valores[i].compare(valor);
+        cout<<"Comp: "<<comp<<endl;
+        if(comp==0){
+            cout<<"Existe"<<endl;
+            return true;
+        }
+    }
+    cout<<"N Tem"<<endl;
+    return false;
+}
 
 void moduloTeste(int tam,int bits){
 
 
     Diretorio *diretorio = new Diretorio(tam);
     int escolha;
+    int teste;
     std::string psdChaves;
+    vector <string>val;
+    Balde *baldeTeste = new Balde(1,15);
+
 
     cout<<"[1]:Insercoes de N pseudo-chaves aleatorias"<<endl;
     cout<<"[2]:Insercoes de N pseudo-chaves escolhendo o bit inicial"<<endl;
@@ -41,25 +59,39 @@ void moduloTeste(int tam,int bits){
 
     if(escolha == 1){
 
+       
         //Bits aletorio;
-        for(int j=0;j<10;j++){
+        for(int j=0;j<20;j++){
 
             for(int i=0;i<bits;i++){
                 
-                int teste=(rand()%100)%2;
-                
-                char o= teste;
+                 teste=(rand()%100)%2;
+                char o=teste;
                 psdChaves+=std::to_string(teste);
             }
-
-        diretorio->inserir(psdChaves); 
-        psdChaves.clear();
+            /*
+            while(valoresExiste(val,psdChaves)){
+                psdChaves.clear();
+                for(int i=0;i<bits;i++){
+                    teste=(rand()%100)%2;
+                    char o= teste;
+                    psdChaves+=std::to_string(teste);
+                
+                }
+                diretorio->inserir(psdChaves);
+            }
+            */
+            cout<<" "<<psdChaves<<endl;
+            //val.push_back(psdChaves);
+            diretorio->inserir(psdChaves); 
+            psdChaves.clear();
         
         }
-    cout<<"Termina"<<endl;
-    diretorio->imprime();
+        //baldeTeste->imprimeBalde();
+        cout<<"Termina"<<endl;
+        diretorio->imprime();
 
-    }if(escolha == 2){
+    } if(escolha == 2){
         int primeirobit;
         cout<<"Escolha o primeiro bit da sua chave [0] e [1]"<<endl;
         cin>>primeirobit;
@@ -68,7 +100,7 @@ void moduloTeste(int tam,int bits){
         char pri= primeirobit;
         psdChaves=std::to_string(primeirobit);
 
-        for(int j=0;j<10;j++){
+        for(int j=0;j<15;j++){
 
              psdChaves=std::to_string(primeirobit);
 
@@ -85,7 +117,8 @@ void moduloTeste(int tam,int bits){
         psdChaves.clear();
         
         }
-
+        cout<<"Termina"<<endl;
+        diretorio->imprime();
     }
 
 

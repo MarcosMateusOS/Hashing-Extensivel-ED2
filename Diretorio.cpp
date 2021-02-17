@@ -23,14 +23,9 @@ Diretorio::Diretorio(int baldeTamanho){
 
 }
 
-
-
-
-
-
  int Diretorio::pega_Indice(int indexBalde, int profundidade){
 
-     //retorna o Index do balde e sua profundidade
+     //retorna o Index do balde de acordo com  sua profundidade
      return indexBalde^(1<<profundidade-1);
      
  }
@@ -49,90 +44,110 @@ void Diretorio::particionaDiretorio(){
 
 void Diretorio::duplicaBalde(int index,string ch){
 
-   
-    
-    
-    int i=pega_Indice(index,profundidadeGlobal); 
-    int index1=min(index,i);
-    int index2=max(index,i);
-   
-   cout<<"Index1: "<<index1<<endl;
-   cout<<"Index2: "<<index2<<endl;
 
-  
-    baldes[index]->imprimeBalde();
     
+    //Crias dois novos baldes
+    Balde *novo1=new Balde(baldes[index]->getprofundidadeLocal(),this->baldeTamanho);
+    Balde *novo2=new Balde(baldes[index]->getprofundidadeLocal(),this->baldeTamanho);
 
-     //Crias dois novos baldes
-    Balde *novo1=new Balde(baldes[index]->getprofundidadeLocal(),baldeTamanho);
-    Balde *novo2=new Balde(baldes[index]->getprofundidadeLocal(),baldeTamanho);
-
+    
+    std::string bitEsquerda = ch.substr(0,profundidadeGlobal);
     novo1->insere_chave_balde(ch);
-    string bitEsquerda = ch.substr(0,profundidadeGlobal);
 
-    int tam = novo1->gettam();
-    for(int i=1;i<tam;i++){
+    
+    for(int i=0;i<this->baldeTamanho;i++){
 
         std::string s=baldes[index]->valores(i);
-        cout<<" "<<s<<endl;
         std::string bitEsquerdaS = s.substr(0,profundidadeGlobal);
+        int compare=bitEsquerdaS.compare(bitEsquerda);
 
-        if(bitEsquerdaS.compare(bitEsquerdaS)){
+        if(compare==0){
              novo1->insere_chave_balde(s);
         }else{
-            novo2->insere_chave_balde(s);
+         
+          novo2->insere_chave_balde(s);
+         
+         }
+    }   
+           
+          
+
+   
+    //Associa os novos baldes com os index correpondentes as suas chaves  no diretorio 
+    
+    
+    
+     for(int i=0;i<baldes.size();i++){
+
+        if(!novo1->baldevazio()){
+
+            std::string s1 = novo1->valores(0);
+            std::string bitEsquerdaB1 = s1.substr(0,profundidadeGlobal);
+            int indexCorrespondeB1 = std::stoi(bitEsquerdaB1, 0, 2);
+            
+            if(i==indexCorrespondeB1){
+                 cout<<"B1:"<<endl;
+                baldes[i]=novo1;
+                baldes[i]->aumenta_profundidade_local();
+                cout<<"P/Balde: "<<baldes[i]->getprofundidadeLocal();
+                baldes[i]->imprimeBalde();
+               break;
+            }
+           
+        }else{
+            int indexVazio=max(index,i);
+            baldes[indexVazio]=novo1;
+            baldes[indexVazio]->aumenta_profundidade_local();
+            break;
+        }
+        
+    }
+
+    for(int i=0;i<baldes.size();i++){
+
+        if(!novo2->baldevazio()){
+
+            std::string s2 = novo2->valores(0);
+            std::string bitEsquerdaB2 = s2.substr(0,profundidadeGlobal);
+            int indexCorrespondeB2 = std::stoi(bitEsquerdaB2, 0, 2);
+
+            if(i==indexCorrespondeB2){
+                cout<<"B2:"<<endl;
+                baldes[i]=novo2;
+                baldes[i]->aumenta_profundidade_local();
+                cout<<"P/Balde: "<<baldes[i]->getprofundidadeLocal();
+                baldes[i]->imprimeBalde();
+               break;
+
+            }
+           
+        }else{
+            int indexVazio=max(index,i);
+            baldes[indexVazio]=novo2;
+            baldes[indexVazio]->aumenta_profundidade_local();
+            break;
         }
 
 
-
-    }
-
-    cout<<"Balde 1:"<<endl;
-
-    novo1->imprimeBalde();
-
-    cout<<"Balde 2:"<<endl;
-    novo2->imprimeBalde();
-
-       
-    //Associa os novos baldes com os index correpondentes as suas chaves  no diretorio 
-    string s1 = novo1->valores(1);
-    string bitEsquerdaB1 = s1.substr(0,profundidadeGlobal);
-    int indexCorrespondeB1 = std::stoi(bitEsquerdaB1, 0, 2);
-
-    cout<<"S1: "<<s1<<endl;
-    cout<<"IndexBalde1: "<<indexCorrespondeB1<<endl;
-
-     string s2 = novo2->valores(1);
-     string bitEsquerdaB2 = s2.substr(0,profundidadeGlobal);
-    int indexCorrespondeB2 = std::stoi(bitEsquerdaB2, 0, 2);
-
-    cout<<"S2: "<<s2<<endl;
-    cout<<"IndexBalde2: "<<indexCorrespondeB2<<endl;
-
-
-
-    
-    baldes[indexCorrespondeB1]=novo1;
-    baldes[indexCorrespondeB2]=novo2;
-
-    //Aumenta a profundidade dos baldes
-    baldes[indexCorrespondeB1]->aumenta_profundidade_local();
-    baldes[indexCorrespondeB2]->aumenta_profundidade_local();
-   
+        
+        }
+        
+        
 }
+   
+    
+
+
 
 void Diretorio::inserir(string ch){
 
    
+    cout<<"Profundiade Mundial: "<<profundidadeGlobal<<endl;
     cout<<"Chave: "<<ch<<endl; 
-    string bitEsquerda = ch.substr(0,profundidadeGlobal);
-
+    std::string bitEsquerda = ch.substr(0,profundidadeGlobal);
     cout<<"Bits Esquerda "<<bitEsquerda<<endl;
-
     int index = std::stoi(bitEsquerda, 0, 2);
     cout<<"Index: "<<index<<endl;
-
     int test=baldes[index]->insere_chave_balde(ch);
     cout<<endl;
     
@@ -151,6 +166,9 @@ void Diretorio::inserir(string ch){
     }
 
 }
+
+   
+
     
     
  

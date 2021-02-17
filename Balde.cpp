@@ -30,11 +30,11 @@ int Balde::gettam(){
 
 int Balde::aumenta_profundidade_local(){
 
-    profundidadeLocal+=profundidadeLocal;
+    profundidadeLocal++;
     return profundidadeLocal;
 }
 
-string Balde::valores(int i){
+std::string Balde::valores(int i){
 
    return balde[i];
     
@@ -46,15 +46,14 @@ int Balde::insere_chave_balde(string psCh){
     if(verifica_balde_cheio()){
         cout<<"Balde cheio"<<endl;
          return 0;
-    }else if(balde.empty()){
-        cout<<"Inserido"<<endl;
+    }else if(baldevazio()){
         balde.push_back(psCh);
         return 2;
 
     }else if(busca_pseudoch(psCh)){
+        cout<<"JA TEM NO BALDE"<<endl;
         return -1;
     }else{
-        cout<<"Inserido"<<endl;
         balde.push_back(psCh);
         return 1;
     }
@@ -62,6 +61,20 @@ int Balde::insere_chave_balde(string psCh){
 
  }
 
+bool Balde::baldevazio(){
+
+    if(balde.empty()){
+        return true;
+    
+    }else{
+        return false;
+    }
+
+}
+
+int Balde::getSize(){
+    return balde.size();
+}
 void Balde::apaga(string ch){
 
     int index;
@@ -79,8 +92,10 @@ void Balde::apaga(string ch){
 }
 void Balde::imprimeBalde(){
 
-    for(int i=0;i<tamBalde;i++){
-        cout<<"["<<i<<"] "<<balde[i]<<endl;;
+    for(int i=0;i<balde.size();i++){
+        
+        cout<<"["<<i<<"] "<<balde[i]<<endl;
+        
     }
 }
  bool Balde::verifica_balde_cheio(){
