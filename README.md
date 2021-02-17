@@ -12,11 +12,10 @@
 #	-Implementado Diretório:
 #				-Inserir
 #				-Busca
-#				-Duplica balde (Implementado mas com erro)
+#				-Duplica balde 
 #				-Duplica diretorio
 #	-	Função Principal
 #	-Modulo teste:
 #		-Inserções de N pseudo-chaves aleatórias
 #		-Inserções de N pseudo-chaves iniciadas com um mesmo padrão de bits
 
-	
